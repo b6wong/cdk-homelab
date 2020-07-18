@@ -1,7 +1,28 @@
 {
-  "app": "npx ts-node bin/cdk-homelab.ts",
+  "app": "npx ts-node bin/infra-r53.ts",
   "context": {
     "@aws-cdk/core:enableStackNameDuplicates": "true",
-    "aws-cdk:enableDiffNoFail": "true"
+    "aws-cdk:enableDiffNoFail": "true",
+    "ENV:template": {
+      "description": "The environment specific values are defined here.  This allows differnet environments to have different values to deploy.  For example, you may want to created a hosted zone for example.com in prod and dev.example.com in dev.  This seems to be a possible approach in CDK right now.  Ideally we can define this in separate files.  When deploying, you will need to specify `cdk deploy -c env=<env>` and in the code you will need to get context like so:  const targetEnv = scope.node.tryGetContext('env'); const env = scope.node.tryGetContext(`ENV:${targetEnv}`);",
+      "hostedZone": "The hosted zone to manage"
+    },
+    "ENV:dev": {
+      "hostedZone": "dev.sadcandles.com"
+    },
+    "ENV:prod": {
+      "hostedZone": "sadcandles.com",
+      "subdomains": [
+        {
+          "name": "dev.sadcandles.com",
+          "ns": [
+            "ns-10.awsdns-01.com",
+            "ns-1454.awsdns-53.org",
+            "ns-1912.awsdns-47.co.uk",
+            "ns-1001.awsdns-61.net"
+          ]
+        }
+      ]
+    }
   }
 }
