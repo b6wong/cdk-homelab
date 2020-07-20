@@ -43,27 +43,33 @@ Further to this, when deploying to different environments, you need to be using 
 cdk-diff () {
   export AWS_PROFILE=$1_admin
   export DEPLOY_ENV=$1
-  cdk diff -c env=$1
+  cdk diff -c env=$1 --app "npx ts-node bin/$2.ts"
 }
 
 cdk-deploy () {
   export AWS_PROFILE=$1_admin
   export DEPLOY_ENV=$1
-  cdk deploy -c env=$1
+  cdk deploy -c env=$1 --app "npx ts-node bin/$2.ts"
 }
 
 cdk-synth () {
   export AWS_PROFILE=$1_admin
   export DEPLOY_ENV=$1
-  cdk synth -c env=$1
+  cdk synth -c env=$1 --app "npx ts-node bin/$2.ts"
 }
 ```
 
 You will use the following commands to deploy to specific environments:
 ```
-cdk-diff <env>
-cdk-deploy <env>
-cdk-synth <env>
+cdk-diff <env> <app>
+cdk-deploy <env> <app>
+cdk-synth <env> <app>
+```
+For example, in cdk.json, we have removed the `app` and separated out the different apps.  We can deploy the infra-r53 and infra-vpc separately like so:
+```
+cdk-deploy prod infra-r53
+cdk-deploy dev infra-r53
+cdk-deploy prod infra-vpc
 ```
 
 # Welcome to your CDK TypeScript project!
