@@ -1,4 +1,5 @@
 import * as cdk from '@aws-cdk/core';
+import * as ec2 from '@aws-cdk/aws-ec2';
 
 export class InfraVpcStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -6,6 +7,24 @@ export class InfraVpcStack extends cdk.Stack {
     
     const targetEnv = scope.node.tryGetContext('env');
     const env = scope.node.tryGetContext(`ENV:${targetEnv}`);
+
+    //// Defines the HostedZone
+    //const hostedZone = new r53.HostedZone(this, 'hosted-zone', {
+    //  zoneName: env.hostedZone,
+    //  comment: "Managed by CDK"
+    //});
+
+    //// Production manges the apex domain. It needs to add ZoneDelegationRecords for other accounts
+    //if (targetEnv === 'prod') {
+    //  for (const subdomain of env.subdomains) {
+    //    const zoneDelegationRecord = new r53.ZoneDelegationRecord(this, 'zone-delegation-record', {
+    //      zone: hostedZone,
+    //      recordName: subdomain.name,
+    //      nameServers: subdomain.ns,
+    //      ttl: Duration.minutes(30)
+    //    });
+    //  }
+    //}
 
   }
 }
