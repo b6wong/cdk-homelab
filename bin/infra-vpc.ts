@@ -11,4 +11,13 @@ if (!deployEnv) {
 }
 
 const app = new cdk.App();
-new InfraVpcStack(app, `homelab-vpc-${deployEnv}`);
+
+const targetEnv = app.node.tryGetContext('env');
+const environment = app.node.tryGetContext(`ENV:${targetEnv}`);
+
+const vpcStack = new InfraVpcStack(app, `homelab-vpc-${deployEnv}`, {
+  env: {
+    region: environment.region,
+    account: environment.account
+  }
+});
