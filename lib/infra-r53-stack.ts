@@ -26,7 +26,6 @@ export class InfraR53Stack extends cdk.Stack {
           ttl: Duration.minutes(30)
         });
       }
-      
     }
 
   }
