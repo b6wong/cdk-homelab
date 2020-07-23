@@ -2,6 +2,7 @@
 import 'source-map-support/register';
 import * as cdk from '@aws-cdk/core';
 import { InfraVpcStack } from '../lib/infra-vpc-stack';
+import { Tag } from '@aws-cdk/core';
 
 const deployEnv = process.env.DEPLOY_ENV;
 
@@ -21,3 +22,7 @@ const vpcStack = new InfraVpcStack(app, `homelab-vpc-${deployEnv}`, {
     account: environment.account
   }
 });
+
+Tag.add(vpcStack, 'Environment', targetEnv);
+Tag.add(vpcStack, 'Application', 'Dominion Card');
+
